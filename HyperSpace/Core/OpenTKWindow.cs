@@ -7,6 +7,7 @@ using System.IO;
 
 namespace HyperSpace.Core {
   class OpenTKWindow : GameWindow {
+    public static String TAG = "OpenTKWindow";
     int pgmID;
     int vsID;
     int fsID;
@@ -29,13 +30,15 @@ namespace HyperSpace.Core {
     private Matrix4 viewMatrix;
     private Matrix4 combinedMatrix;
 
-    public OpenTKWindow(GraphicsContextFlags flags) : base(1366, 768) {
-      
+    public OpenTKWindow(Game game)
+      : base(game.width, game.height) {
     }
 
     protected override void OnUnload(EventArgs e) {
       base.OnUnload(e);
-      Debug.WriteLine("Remvoing shit");
+      Game.shared.dispose();
+
+      Game.logger.info(TAG, "Remvoing shit");
       GL.DeleteBuffer(vbo_position);
       GL.DeleteBuffer(vbo_color);
       GL.DeleteBuffer(vbo_mview);
@@ -44,14 +47,15 @@ namespace HyperSpace.Core {
 
     protected override void OnLoad(EventArgs e) {
       base.OnLoad(e);
+      Game.shared.initialize();
 
       pgmID = GL.CreateProgram();
       loadShader("Res/test.vert", ShaderType.VertexShader, pgmID, out vsID);
       loadShader("Res/test.frag", ShaderType.FragmentShader, pgmID, out fsID);
 
       GL.LinkProgram(pgmID);
-      Debug.WriteLine("Compiled program {0}", pgmID);
-      Console.WriteLine(GL.GetProgramInfoLog(pgmID));
+      Game.logger.info(TAG, "Compiled program {0}", pgmID);
+      Game.logger.info(TAG, GL.GetProgramInfoLog(pgmID));
 
       attribute_vpos     = GL.GetAttribLocation(pgmID, "a_position");
       attribute_vcol     = GL.GetAttribLocation(pgmID, "a_color");
@@ -59,7 +63,7 @@ namespace HyperSpace.Core {
       uniform_mview      = GL.GetUniformLocation(pgmID, "u_model_view");
       
       if (attribute_vpos == -1 || attribute_vcol == -1 || uniform_mview == -1 || uniform_projection == -1) {
-        Debug.WriteLine("Error binding attributes");
+        Game.logger.info(TAG, "Error binding attributes");
       }
 
       GL.GenBuffers(1, out vbo_position);
@@ -77,8 +81,6 @@ namespace HyperSpace.Core {
 
 
       mviewdata = Matrix4.CreateTranslation(0.0f, 0.0f, 0.0f);
-
-      
     }
 
     void loadShader(String filename, ShaderType type, int program, out int address) {
@@ -93,19 +95,21 @@ namespace HyperSpace.Core {
       int compileResult;
       GL.GetShader(address, ShaderParameter.CompileStatus, out compileResult);
       if (compileResult != 1) {
-        Debug.WriteLine("Compile Error!");
-        Debug.WriteLine(compileResult);
+        Game.logger.info(TAG, "Compile Error!");
       }
+      Game.logger.info(TAG, "Compile result: " + compileResult);
     }
 
     protected override void OnUpdateFrame(FrameEventArgs e) {
       base.OnUpdateFrame(e);
+      Game.shared.update(e.Time);
       angle += 1f * (float)e.Time;
-      Matrix4.CreateRotationX(angle, out mviewdata);
+      Matrix4.CreateRotationY(angle, out mviewdata);
     }
 
     protected override void OnResize(EventArgs e) {
       base.OnResize(e);
+      Game.shared.resize(Width, Height);
 
       float aspect_ratio = Width / (float)Height;
       this.projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspect_ratio, 1, 60);
@@ -115,6 +119,8 @@ namespace HyperSpace.Core {
 
     protected override void OnRenderFrame(FrameEventArgs e) {
       base.OnRenderFrame(e);
+      Game.shared.render();
+
 
       GL.Viewport(0, 0, Width, Height);
       GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

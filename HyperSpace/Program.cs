@@ -11,8 +11,9 @@ using HyperSpace.Core;
 namespace HyperSpace {
   class Program {
     static void Main(string[] args) {
-      OpenTKWindow gw = new OpenTKWindow(GraphicsContextFlags.Default);
-      gw.Run(60);
+      Game game       = new Game();
+      OpenTKWindow gw = new OpenTKWindow(game);
+      gw.Run(Game.FPS);
     }
   }
 }

@@ -46,6 +46,8 @@
     <Compile Include="Core\Game.cs" />
     <Compile Include="Core\OpenTKWindow.cs" />
     <Compile Include="Core\Rendering\Shader.cs" />
+    <Compile Include="Core\Scenes\Scene.cs" />
+    <Compile Include="Core\Scenes\Tests\BlackScreenTest.cs" />
     <Compile Include="Core\Utils\Logger.cs" />
     <Compile Include="Core\Utils\Timer.cs" />
     <Compile Include="Program.cs" />

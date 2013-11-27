@@ -21,7 +21,8 @@ namespace HyperSpace.Core.Scenes.Tests {
     }
 
     public void render() {
-      
+      shader.use();
+      shader.attribute("a_position");
     }
 
     public void onExit() {

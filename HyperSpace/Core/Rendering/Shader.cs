@@ -12,8 +12,12 @@ namespace HyperSpace.Core.Rendering {
     private int pgmID;
     private int vsID;
     private int fsID;
-
+    private Dictionary<String, int> attributesMapping;
+    private Dictionary<String, int> uniformsMapping;
     public Shader(String vertex, String fragment) {
+      attributesMapping = new Dictionary<string, int>();
+      uniformsMapping   = new Dictionary<string, int>();
+
       pgmID = GL.CreateProgram();
 
       compile(vertex, ShaderType.VertexShader, pgmID, out vsID);
@@ -45,5 +49,28 @@ namespace HyperSpace.Core.Rendering {
     public void use() {
       GL.UseProgram(pgmID);
     }
+
+    #region Shader Uniform/Attribute location
+    public int attribute(String name) {
+      if (!attributesMapping.ContainsKey(name)) {
+        int location = GL.GetAttribLocation(pgmID, name);
+        if (location == -1) {
+          Game.logger.info(TAG, "Attribute " + name + " not found in shader " + pgmID);
+        }
+        attributesMapping.Add(name, location);
+      }
+      return attributesMapping[name];
+    }
+    public int uniform(String name) {
+      if (!uniformsMapping.ContainsKey(name)) {
+        int location = GL.GetUniformLocation(pgmID, name);
+        if (location == -1) {
+          Game.logger.info(TAG, "Uniform " + name + " not found in shader " + pgmID);
+        }
+        uniformsMapping.Add(name, location);
+      }
+      return uniformsMapping[name];
+    }
+    #endregion
   }
 }

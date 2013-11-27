@@ -66,7 +66,7 @@ namespace HyperSpace.Core {
     #region Game Life Cycle
     public void initialize() {
       logger.info(TAG, "Initialize");
-      CurrentScene = new BlackScreenTest();
+      CurrentScene = new ColoredTriangleRenderScene();
     }
     public void resize(int Width, int Height) {
       width = Width;

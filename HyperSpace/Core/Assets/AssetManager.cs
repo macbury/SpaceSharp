@@ -23,7 +23,6 @@ namespace HyperSpace.Core.Assets {
       using (StreamReader sr = new StreamReader(pathToFile)) {
         return sr.ReadToEnd();
       }
-      return null;
     }
     public Shader shader(String name) {
       String key = "Shader"+name;

@@ -92,10 +92,11 @@ namespace HyperSpace.Core.Scenes.Tests {
       GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, (IntPtr)(vertdata.Length * Vector3.SizeInBytes), vertdata, BufferUsageHint.StaticDraw);
       GL.VertexAttribPointer(attribute_vpos, 3, VertexAttribPointerType.Float, false, 0, 0);
 
+
       GL.BindBuffer(BufferTarget.ArrayBuffer, vbo_color);
       GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, (IntPtr)(coldata.Length * Vector3.SizeInBytes), coldata, BufferUsageHint.StaticDraw);
       GL.VertexAttribPointer(attribute_vcol, 3, VertexAttribPointerType.Float, true, 0, 0);
-
+     
       GL.UniformMatrix4(uniform_mview, false, ref mviewdata);
       GL.UniformMatrix4(uniform_projection, false, ref combinedMatrix);
 

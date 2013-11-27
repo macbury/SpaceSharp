@@ -11,6 +11,21 @@ namespace HyperSpace.Core.Rendering {
   class Shader : Disposable {
     public static String TAG = "Shader";
 
+    #region Default Attributes
+    /** default name for position attributes **/
+    public static String POSITION_ATTRIBUTE = "a_position";
+    /** default name for normal attribtues **/
+    public static String NORMAL_ATTRIBUTE = "a_normal";
+    /** default name for color attributes **/
+    public static String COLOR_ATTRIBUTE = "a_color";
+    /** default name for texcoords attributes, append texture unit number **/
+    public static String TEXCOORD_ATTRIBUTE = "a_texCoord";
+    /** default name for tangent attribute **/
+    public static String TANGENT_ATTRIBUTE = "a_tangent";
+    /** default name for binormal attribute **/
+    public static String BINORMAL_ATTRIBUTE = "a_binormal";
+    #endregion
+
     #region Settings
     private int pgmID;
     private int vsID;

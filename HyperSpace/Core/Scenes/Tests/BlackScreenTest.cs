@@ -13,11 +13,7 @@ namespace HyperSpace.Core.Scenes.Tests {
     
     private string UNIFORM_MODEL_VIEW = "u_model_view";
     private string UNIFORM_PROJECTION = "u_projection_view";
-    private VBO positionVBO;
-    private VBO colorVBO;
-
-    private Vector3[] vertdata;
-    private Vector3[] coldata;
+    
 
     private Matrix4 mviewdata;
     private Matrix4 projectionMatrix;
@@ -25,22 +21,43 @@ namespace HyperSpace.Core.Scenes.Tests {
     private Matrix4 combinedMatrix;
 
     float angle = 0.0f;
+    private Mesh mesh;
+    private VertexBufferObject rawMesh;
 
     public void onEnter() {
-      this.shader      = Game.assets.shader("test");
-      this.positionVBO = new VBO();
+      this.shader            = Game.assets.shader("test");
+      VertexAttributes attrs = new VertexAttributes(VertexAttribute.Position(), VertexAttribute.Color());
+      this.rawMesh           = new VertexBufferObject(true, 3, 7, attrs);
+
+      float[] data = new float[] {
+        -0.8f, -0.8f, 0f,  1f, 0f, 0f, 1.0f,
+        0.8f, -0.8f, 0f,   0f, 1f, 0f, 1.0f,
+        0f,  0.8f, 0f,     0f,  0f, 1f, 1.0f
+      };
+
+      this.rawMesh.setVerticies(ref data);
+
+      /*this.positionVBO = new VBO();
       this.colorVBO    = new VBO();
-      vertdata = new Vector3[] { new Vector3(-0.8f, -0.8f, 0f),
+
+      this.mesh = new Mesh(OpenTK.Graphics.OpenGL.BufferUsageHint.StaticDraw, OpenTK.Graphics.OpenGL.PrimitiveType.Triangles);
+
+      Vector3[] vertdata = new Vector3[] { new Vector3(-0.8f, -0.8f, 0f),
                 new Vector3( 0.8f, -0.8f, 0f),
                 new Vector3( 0f,  0.8f, 0f)};
+      PositionAttribute vertexs = new PositionAttribute(vertdata.Length);
+      vertexs.set(ref vertdata);
+      //this.mesh.addAttribute(ref vertexs);
 
+      Vector4[] coldata = new Vector4[] { new Vector4(1f, 0f, 0f, 1.0f),
+                new Vector4( 0f, 1f, 0f, 1.0f),
+                new Vector4( 0f,  0f, 1f, 1.0f)};
 
-      coldata = new Vector3[] { new Vector3(1f, 0f, 0f),
-                new Vector3( 0f, 0f, 1f),
-                new Vector3( 0f,  1f, 0f)};
+      this.colors = new ColorAttribute(coldata.Length);
+      this.colors.set(ref coldata);
+      //this.mesh.addAttribute(ref vertexs);
 
-
-      mviewdata = Matrix4.CreateTranslation(0.0f, 0.0f, 0.0f);
+      mviewdata = Matrix4.CreateTranslation(0.0f, 0.0f, 0.0f);*/
     }
 
     public void resize() {
@@ -62,29 +79,36 @@ namespace HyperSpace.Core.Scenes.Tests {
       GL.Enable(EnableCap.DepthTest);
 
       shader.use();
-      int position = shader.attribute("a_position");
-      int color = shader.attribute("a_color");
-
-      positionVBO.bind();
-      GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, (IntPtr)(vertdata.Length * Vector3.SizeInBytes), vertdata, BufferUsageHint.StaticDraw);
-      GL.VertexAttribPointer(position, 3, VertexAttribPointerType.Float, false, 0, 0);
-
-      colorVBO.bind();
-      GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, (IntPtr)(coldata.Length * Vector3.SizeInBytes), coldata, BufferUsageHint.StaticDraw);
-      GL.VertexAttribPointer(color, 3, VertexAttribPointerType.Float, true, 0, 0);
-
       shader.uniformMatrix4(UNIFORM_MODEL_VIEW, false, ref mviewdata);
       shader.uniformMatrix4(UNIFORM_PROJECTION, false, ref combinedMatrix);
+
+      this.rawMesh.bind(ref shader);
+      GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+      this.rawMesh.unbind(ref shader);
+      GL.Flush();
+      /*
+      //int position = shader.attribute(vertexs.attrName);
+      int color    = shader.attribute(colors.attrName);
+
+      positionVBO.bind();
       
+      GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, vertexs.size(), vertexs.get(), BufferUsageHint.StaticDraw);
+      //GL.VertexAttribPointer(position, vertexs.attrSize, vertexs.pointerType, false, 0, 0);
       GL.EnableVertexAttribArray(position);
+
+      colorVBO.bind();
+      GL.BufferData<Vector4>(BufferTarget.ArrayBuffer, colors.size(), colors.get(), BufferUsageHint.StaticDraw);
+      //GL.VertexAttribPointer(color, colors.attrSize, vertexs.pointerType, true, 0, 0);
       GL.EnableVertexAttribArray(color);
+
+      
 
       GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
 
       GL.DisableVertexAttribArray(position);
       GL.DisableVertexAttribArray(color);
 
-      GL.Flush();
+      GL.Flush();*/
     }
 
     public void onExit() {
@@ -92,8 +116,6 @@ namespace HyperSpace.Core.Scenes.Tests {
     }
 
     public void dispose() {
-      this.positionVBO.dispose();
-      this.colorVBO.dispose();
     }
   }
 }

@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace HyperSpace.Core.Rendering {
   class Mesh {
-    private BufferUsageHint hint;
-    private List<Attribute> attributes;
+    private VertexBufferObject verticies;
+    private PrimitiveType      primitive;
 
-    public Mesh(BufferUsageHint hint) {
-      this.hint       = hint;
-      this.attributes = new List<Attribute>();
+    public Mesh(bool isStatic, int attributesPerVertex, int vertexCount) {
+      
+      
     }
   }
 }

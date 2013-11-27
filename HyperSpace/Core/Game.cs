@@ -59,7 +59,7 @@ namespace HyperSpace.Core {
         throw new Exception("Already initialized!!!!");
       _game = this;
 
-      _assets = new AssetManager();
+      _assets = new AssetManager("Res/");
       logger.info(TAG, "Creating");
     }
 
@@ -83,6 +83,7 @@ namespace HyperSpace.Core {
     public void dispose() {
       logger.info(TAG, "Dispose");
       CurrentScene.dispose();
+      assets.dispose();
     }
     #endregion
   }

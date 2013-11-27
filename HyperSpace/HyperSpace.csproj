@@ -49,6 +49,7 @@
     <Compile Include="Core\Rendering\Shader.cs" />
     <Compile Include="Core\Scenes\Scene.cs" />
     <Compile Include="Core\Scenes\Tests\BlackScreenTest.cs" />
+    <Compile Include="Core\Utils\Disposable.cs" />
     <Compile Include="Core\Utils\Logger.cs" />
     <Compile Include="Core\Utils\Timer.cs" />
     <Compile Include="Program.cs" />
@@ -57,6 +58,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="OpenTK.dll.config" />
+    <None Include="Res\Shader\test.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Res\Shader\test.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Res\test.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

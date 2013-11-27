@@ -2,6 +2,7 @@
 using HyperSpace.Core.Scenes;
 using HyperSpace.Core.Scenes.Tests;
 using HyperSpace.Core.Utils;
+using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,6 +79,9 @@ namespace HyperSpace.Core {
       CurrentScene.update(time);
     }
     public void render() {
+      GL.ClearColor(0f, 0f, 0.0f, 1.0f);
+      GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+      
       CurrentScene.render();
     }
     public void dispose() {

@@ -46,8 +46,10 @@
     <Compile Include="Core\Assets\AssetManager.cs" />
     <Compile Include="Core\Game.cs" />
     <Compile Include="Core\OpenTKWindow.cs" />
+    <Compile Include="Core\Rendering\Camera.cs" />
     <Compile Include="Core\Rendering\IndexBufferObject.cs" />
     <Compile Include="Core\Rendering\Mesh.cs" />
+    <Compile Include="Core\Rendering\PerspecitveCamera.cs" />
     <Compile Include="Core\Rendering\Shader.cs" />
     <Compile Include="Core\Rendering\VertexAttribute.cs" />
     <Compile Include="Core\Rendering\VertexAttributes.cs" />

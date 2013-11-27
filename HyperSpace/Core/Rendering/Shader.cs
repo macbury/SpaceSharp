@@ -1,4 +1,5 @@
 ﻿using HyperSpace.Core.Utils;
+using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,15 @@ using System.Threading.Tasks;
 namespace HyperSpace.Core.Rendering {
   class Shader : Disposable {
     public static String TAG = "Shader";
+
+    #region Settings
     private int pgmID;
     private int vsID;
     private int fsID;
     private Dictionary<String, int> attributesMapping;
     private Dictionary<String, int> uniformsMapping;
+    #endregion
+
     public Shader(String vertex, String fragment) {
       attributesMapping = new Dictionary<string, int>();
       uniformsMapping   = new Dictionary<string, int>();
@@ -70,6 +75,11 @@ namespace HyperSpace.Core.Rendering {
         uniformsMapping.Add(name, location);
       }
       return uniformsMapping[name];
+    }
+    #endregion
+    #region Assign uniforms
+    public void uniformMatrix4(String name, bool transpond, ref Matrix4 mat) {
+      GL.UniformMatrix4(uniform(name), transpond, ref mat);
     }
     #endregion
   }

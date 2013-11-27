@@ -100,7 +100,8 @@ namespace HyperSpace.Core {
 
     protected override void OnUpdateFrame(FrameEventArgs e) {
       base.OnUpdateFrame(e);
-      angle += 10 * e.Time;
+      angle += 1f * (float)e.Time;
+      Matrix4.CreateRotationX(angle, out mviewdata);
     }
 
     protected override void OnResize(EventArgs e) {

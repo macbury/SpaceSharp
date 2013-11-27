@@ -1,4 +1,5 @@
-﻿using HyperSpace.Core.Scenes;
+﻿using HyperSpace.Core.Assets;
+using HyperSpace.Core.Scenes;
 using HyperSpace.Core.Scenes.Tests;
 using HyperSpace.Core.Utils;
 using System;
@@ -11,13 +12,19 @@ namespace HyperSpace.Core {
   class Game {
     public static string TAG = "Game";
     #region Shared logic
-    private static Logger _logger;
     private static Game _game;
+    private Logger _logger;
+    private AssetManager _assets;
+    public static AssetManager assets {
+      get {
+        return shared._assets;
+      }
+    }
     public static Logger logger {
       get {
-        if (_logger == null)
-          _logger = new Logger();
-        return _logger;
+        if (shared._logger == null)
+          shared._logger = new Logger();
+        return shared._logger;
       }
     }
     public static Game shared {
@@ -48,11 +55,12 @@ namespace HyperSpace.Core {
     #endregion
     
     public Game() {
-      logger.info(TAG, "Creating");
-
       if (_game != null)
         throw new Exception("Already initialized!!!!");
       _game = this;
+
+      _assets = new AssetManager();
+      logger.info(TAG, "Creating");
     }
 
     #region Game Life Cycle

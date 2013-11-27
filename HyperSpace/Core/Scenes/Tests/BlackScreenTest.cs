@@ -23,18 +23,26 @@ namespace HyperSpace.Core.Scenes.Tests {
     float angle = 0.0f;
     private Mesh mesh;
     private VertexBufferObject rawMesh;
+    private IndexBufferObject rawIndicies;
 
     public void onEnter() {
       this.shader            = Game.assets.shader("test");
       VertexAttributes attrs = new VertexAttributes(VertexAttribute.Position(), VertexAttribute.Color());
       this.rawMesh           = new VertexBufferObject(true, 3, 7, attrs);
-
+      this.rawIndicies       = new IndexBufferObject(true, 3);
       float[] data = new float[] {
         -0.8f, -0.8f, 0f,  1f, 0f, 0f, 1.0f,
         0.8f, -0.8f, 0f,   0f, 1f, 0f, 1.0f,
-        0f,  0.8f, 0f,     0f,  0f, 1f, 1.0f
+        0f,  0.8f, 0f,     0f,  0f, 1f, 1.0f,
+        0.8f,  0.8f, 0f,     1f,  0f, 1f, 1.0f
       };
 
+      uint[] indicies = new uint[] {
+        0, 1, 2,
+        1, 2, 3
+      };
+
+      this.rawIndicies.setIndicies(ref indicies);
       this.rawMesh.setVerticies(ref data);
 
       /*this.positionVBO = new VBO();
@@ -68,7 +76,7 @@ namespace HyperSpace.Core.Scenes.Tests {
     }
 
     public void update(double delta) {
-      angle += 1f * (float)delta;
+      //angle += 1f * (float)delta;
       Matrix4.CreateRotationY(angle, out mviewdata);
     }
 
@@ -83,7 +91,11 @@ namespace HyperSpace.Core.Scenes.Tests {
       shader.uniformMatrix4(UNIFORM_PROJECTION, false, ref combinedMatrix);
 
       this.rawMesh.bind(ref shader);
-      GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+      this.rawIndicies.bind();
+      //GL.DrawArrays(PrimitiveType.Triangles, 0, this.rawMesh.numVertices); //Without indicies
+      GL.DrawElements(BeginMode.Triangles, this.rawIndicies.size, DrawElementsType.UnsignedInt, 0);
+      
+      this.rawIndicies.unbind();
       this.rawMesh.unbind(ref shader);
       GL.Flush();
       /*

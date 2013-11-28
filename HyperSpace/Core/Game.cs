@@ -1,4 +1,5 @@
 ﻿using HyperSpace.Core.Assets;
+using HyperSpace.Core.Rendering;
 using HyperSpace.Core.Scenes;
 using HyperSpace.Core.Scenes.Tests;
 using HyperSpace.Core.Utils;
@@ -16,6 +17,10 @@ namespace HyperSpace.Core {
     private static Game _game;
     private Logger _logger;
     private AssetManager _assets;
+    private MeshManager _meshManager;
+    public static MeshManager meshes {
+      get { return shared._meshManager; }
+    }
     public static AssetManager assets {
       get {
         return shared._assets;
@@ -60,7 +65,8 @@ namespace HyperSpace.Core {
         throw new Exception("Already initialized!!!!");
       _game = this;
 
-      _assets = new AssetManager("Res/");
+      _assets      = new AssetManager("Res/");
+      _meshManager = new MeshManager();
       logger.info(TAG, "Creating");
     }
 
@@ -88,6 +94,7 @@ namespace HyperSpace.Core {
       logger.info(TAG, "Dispose");
       CurrentScene.dispose();
       assets.dispose();
+      meshes.dispose();
     }
     #endregion
   }

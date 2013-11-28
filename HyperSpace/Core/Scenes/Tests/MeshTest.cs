@@ -16,12 +16,14 @@ namespace HyperSpace.Core.Scenes.Tests {
     private IndexBufferObject cubeIndexObject;
     private Matrix4 mviewdata;
     float angle = 0.0f;
+    private Mesh mesh;
 
     public void onEnter() {
       this.shader         = Game.assets.shader("test");
       this.camera         = new PerspecitveCamera();
       this.cameraPosition = new Vector3(5f, 5f, -10f);
       this.camera.translate(ref cameraPosition);
+      
 
       Vector3 target = new Vector3(0f, 0f, 0f);
       this.camera.lookAt(ref target);
@@ -61,6 +63,8 @@ namespace HyperSpace.Core.Scenes.Tests {
       VertexAttributes attrs = new VertexAttributes(VertexAttribute.Position(), VertexAttribute.Color());
       this.cubeVertexObject  = new VertexBufferObject(true, 3, 7, attrs);
       this.cubeIndexObject   = new IndexBufferObject(true);
+
+      this.mesh              = new Mesh(true, 7, 8, attrs);
 
       this.cubeVertexObject.setVerticies(ref vertData);
       this.cubeIndexObject.setIndicies(ref indicedata);
@@ -102,6 +106,8 @@ namespace HyperSpace.Core.Scenes.Tests {
     public void dispose() {
       this.cubeVertexObject.dispose();
       this.cubeIndexObject.dispose();
+
+      this.mesh.dispose();
     }
   }
 }

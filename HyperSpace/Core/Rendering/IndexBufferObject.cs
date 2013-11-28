@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HyperSpace.Core.Rendering {
   class IndexBufferObject : Disposable {
-    private int bufferHandle;
+    private int bufferHandle = -1;
     private uint[] buffer;
     private bool dirty;
     private BufferUsageHint hint;
@@ -17,16 +17,17 @@ namespace HyperSpace.Core.Rendering {
       get { return bufferHandle; }
     }
     public IndexBufferObject(bool isStatic) {
-      this.buffer = new uint[5];
       this.dirty = true;
       this.hint = isStatic ? BufferUsageHint.StaticDraw : BufferUsageHint.DynamicDraw;
-      GL.GenBuffers(1, out bufferHandle);
     }
     public void setIndicies(ref uint[] buffer) {
       this.buffer = buffer;
       dirty = true;
     }
     public void bind() {
+      if (bufferHandle == -1)
+        GL.GenBuffers(1, out bufferHandle);
+
       GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufferHandle);
 
       if (dirty) {
@@ -45,6 +46,10 @@ namespace HyperSpace.Core.Rendering {
       GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
       GL.DeleteBuffer(bufferHandle);
     }
-    public int size { get { return buffer.Length; } }
+    public int size { get { return buffer == null ? 0 : buffer.Length; } }
+
+    public bool empty() {
+      return this.buffer == null || this.buffer.Length == 0;
+    }
   }
 }

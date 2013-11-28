@@ -11,7 +11,7 @@ namespace HyperSpace.Core {
     
 
     public OpenTKWindow(Game game)
-      : base(game.width, game.height) {
+      : base(game.width, game.height, new GraphicsMode(32, 24, 0, 4)) {
     }
 
     protected override void OnUnload(EventArgs e) {

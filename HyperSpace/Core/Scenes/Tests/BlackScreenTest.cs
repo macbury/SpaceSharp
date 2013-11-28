@@ -30,7 +30,7 @@ namespace HyperSpace.Core.Scenes.Tests {
       this.shader            = Game.assets.shader("test");
       VertexAttributes attrs = new VertexAttributes(VertexAttribute.Position(), VertexAttribute.Color());
       this.rawMesh           = new VertexBufferObject(true, 3, 7, attrs);
-      this.rawIndicies       = new IndexBufferObject(true, 3);
+      this.rawIndicies       = new IndexBufferObject(true);
 
       float[] data = new float[] {
         -0.8f, -0.8f, 0f,  1f, 0f, 0f, 1.0f,
@@ -67,7 +67,7 @@ namespace HyperSpace.Core.Scenes.Tests {
     }
 
     public void update(double delta) {
-      //angle += 1f * (float)delta;
+      angle += 1f * (float)delta;
       Matrix4.CreateRotationY(angle, out mviewdata);
     }
 

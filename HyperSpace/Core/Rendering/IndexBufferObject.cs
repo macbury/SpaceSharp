@@ -16,8 +16,8 @@ namespace HyperSpace.Core.Rendering {
     public int id {
       get { return bufferHandle; }
     }
-    public IndexBufferObject(bool isStatic, int maxIndices) {
-      this.buffer = new uint[maxIndices];
+    public IndexBufferObject(bool isStatic) {
+      this.buffer = new uint[5];
       this.dirty = true;
       this.hint = isStatic ? BufferUsageHint.StaticDraw : BufferUsageHint.DynamicDraw;
       GL.GenBuffers(1, out bufferHandle);

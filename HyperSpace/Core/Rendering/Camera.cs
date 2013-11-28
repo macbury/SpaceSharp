@@ -70,22 +70,23 @@ namespace HyperSpace.Core.Rendering {
     }
     public abstract void onUpdate();
     public abstract void onResize();
-
     public void lookAt(ref Vector3 target) {
       Vector3.Subtract(ref target, ref _position, out _direction);
       _direction.Normalize();
       normalizeUp();
     }
-
     public void normalizeUp() {
       Vector3.Cross(ref _direction, ref _up, out _temp);
       _temp.Normalize();
       Vector3.Cross(ref _temp, ref _direction, out _up);
       _up.Normalize();
     }
-
     public void translate(ref Vector3 _target) {
       Vector3.Add(ref _position, ref _target, out _position);
+    }
+    public void resize(int w, int h) {
+      this.viewportWidth = w;
+      this.viewportHeight = h;
     }
   }
 }

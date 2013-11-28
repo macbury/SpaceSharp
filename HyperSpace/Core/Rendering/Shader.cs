@@ -10,7 +10,12 @@ using System.Threading.Tasks;
 namespace HyperSpace.Core.Rendering {
   class Shader : Disposable {
     public static String TAG = "Shader";
-
+    #region DefaultUniforms
+    /** default name for projection matrix uniform **/
+    public static String PROJECTION_UNIFORM    = "u_projection_view";
+    /** default name for model view matrix uniform **/
+    public static String MODEL_VIEW_UNIFORM = "u_model_view";
+    #endregion
     #region Default Attributes
     /** default name for position attributes **/
     public static String POSITION_ATTRIBUTE = "a_position";
@@ -25,7 +30,6 @@ namespace HyperSpace.Core.Rendering {
     /** default name for binormal attribute **/
     public static String BINORMAL_ATTRIBUTE = "a_binormal";
     #endregion
-
     #region Settings
     private int pgmID;
     private int vsID;
@@ -66,10 +70,18 @@ namespace HyperSpace.Core.Rendering {
       Game.logger.info(TAG, "Disposing: " + pgmID);
       GL.DeleteShader(pgmID);
     }
+
+    #region Rendering
     public void use() {
       GL.UseProgram(pgmID);
     }
-
+    public void begin() {
+      GL.UseProgram(pgmID);
+    }
+    public void end() {
+      GL.UseProgram(0);
+    }
+    #endregion
     #region Shader Uniform/Attribute location
     public int attribute(String name) {
       if (!attributesMapping.ContainsKey(name)) {
@@ -96,6 +108,11 @@ namespace HyperSpace.Core.Rendering {
     public void uniformMatrix4(String name, bool transpond, ref Matrix4 mat) {
       GL.UniformMatrix4(uniform(name), transpond, ref mat);
     }
+
+    public void projectUsingCamera(ref PerspecitveCamera perspecitveCamera) {
+      uniformMatrix4(PROJECTION_UNIFORM, false, ref perspecitveCamera.combined);
+    }
+
     #endregion
   }
 }

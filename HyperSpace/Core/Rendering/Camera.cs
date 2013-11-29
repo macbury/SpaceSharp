@@ -21,12 +21,16 @@ namespace HyperSpace.Core.Rendering {
     protected Matrix4 _projection;
     protected Matrix4 _view;
     public    Matrix4 combined;
+    public Vector3 direction {
+      get { return _direction; }
+      set { _direction = value; }
+    }
     protected Matrix4 _invProjectionView;
 
     /** the near clipping plane distance, has to be positive **/
-    public float near = 1;
+    public float near = 0.1f;
     /** the far clipping plane distance, has to be positive **/
-    public float far = 100;
+    public float far = 100f;
 
     /** the viewport width **/
     protected float _viewportWidth = 0;
@@ -51,12 +55,12 @@ namespace HyperSpace.Core.Rendering {
     public Camera(int width, int height) {
       this._viewportHeight = height;
       this._viewportWidth  = width;
-      this._position      = Vector3.Zero;
-      this._direction     = new Vector3(0, 0, -1);
-      this._up            = new Vector3(0, 1, 0);
-      this._temp          = Vector3.Zero;
-      this._projection    = new Matrix4();
-      this._view          = Matrix4.Identity;
+      this._position       = Vector3.Zero;
+      this._direction      = new Vector3(0, 0, 1);
+      this._up             = new Vector3(0, 1, 0);
+      this._temp           = Vector3.Zero;
+      this._projection     = new Matrix4();
+      this._view           = Matrix4.Identity;
     }
 
     public void update() {
@@ -65,10 +69,12 @@ namespace HyperSpace.Core.Rendering {
         onResize();
         dirty = false;
       }
-
-      onUpdate();
+      // to coś jest spierdolone!
+      _view = Matrix4.LookAt(_position, _position + _direction, _up);
+      //Matrix4.Mult(ref _view, ref _projection, out combined); // chyba tutaj
+      combined = _projection;
     }
-    public abstract void onUpdate();
+
     public abstract void onResize();
     public void lookAt(ref Vector3 target) {
       Vector3.Subtract(ref target, ref _position, out _direction);
@@ -82,11 +88,18 @@ namespace HyperSpace.Core.Rendering {
       _up.Normalize();
     }
     public void translate(ref Vector3 _target) {
-      Vector3.Add(ref _position, ref _target, out _position);
+      _position += _target;
     }
     public void resize(int w, int h) {
       this.viewportWidth = w;
       this.viewportHeight = h;
+    }
+    public void resize() {
+      resize(Game.shared.width, Game.shared.height);
+    }
+
+    public override string ToString() {
+      return "Projection:\n" + _projection.ToString() + "\nView:\n" + _view.ToString() + "\nCombined:\n" + combined.ToString();
     }
   }
 }

@@ -15,6 +15,7 @@ namespace HyperSpace.Core.Rendering {
     public static String PROJECTION_UNIFORM    = "u_projection_view";
     /** default name for model view matrix uniform **/
     public static String MODEL_VIEW_UNIFORM = "u_model_view";
+    public static String TEXTURE_UNIFORM = "u_texture";
     #endregion
     #region Default Attributes
     /** default name for position attributes **/
@@ -25,6 +26,7 @@ namespace HyperSpace.Core.Rendering {
     public static String COLOR_ATTRIBUTE = "a_color";
     /** default name for texcoords attributes, append texture unit number **/
     public static String TEXCOORD_ATTRIBUTE = "a_texCoord";
+    
     /** default name for tangent attribute **/
     public static String TANGENT_ATTRIBUTE = "a_tangent";
     /** default name for binormal attribute **/
@@ -50,6 +52,8 @@ namespace HyperSpace.Core.Rendering {
       GL.LinkProgram(pgmID);
       Game.logger.info(TAG, "Compiled program {0}", pgmID);
       Game.logger.info(TAG, GL.GetProgramInfoLog(pgmID));
+
+      Game.glResources.Add(this);
     }
     private void compile(String source, ShaderType type, int program, out int address) {
       address = GL.CreateShader(type);
@@ -69,6 +73,7 @@ namespace HyperSpace.Core.Rendering {
     public void dispose() {
       Game.logger.info(TAG, "Disposing: " + pgmID);
       GL.DeleteShader(pgmID);
+      Game.glResources.Remove(this);
     }
 
     #region Rendering
@@ -108,11 +113,18 @@ namespace HyperSpace.Core.Rendering {
     public void uniformMatrix4(String name, bool transpond, ref Matrix4 mat) {
       GL.UniformMatrix4(uniform(name), transpond, ref mat);
     }
-
+    public void uniformTexture(int unit) {
+      GL.Uniform1(uniform(TEXTURE_UNIFORM + unit), unit);
+    }
     public void projectUsingCamera(ref PerspecitveCamera perspecitveCamera) {
       uniformMatrix4(PROJECTION_UNIFORM, false, ref perspecitveCamera.combined);
     }
+    public void projectUsingCamera(ref Camera2D camera) {
+      uniformMatrix4(PROJECTION_UNIFORM, false, ref camera.combined);
+    }
 
     #endregion
+
+    
   }
 }

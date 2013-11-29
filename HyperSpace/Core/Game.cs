@@ -17,9 +17,9 @@ namespace HyperSpace.Core {
     private static Game _game;
     private Logger _logger;
     private AssetManager _assets;
-    private MeshManager _meshManager;
-    public static MeshManager meshes {
-      get { return shared._meshManager; }
+    private GLResourcesManager _glResources;
+    public static GLResourcesManager glResources {
+      get { return shared._glResources; }
     }
     public static AssetManager assets {
       get {
@@ -66,14 +66,14 @@ namespace HyperSpace.Core {
       _game = this;
 
       _assets      = new AssetManager("Res/");
-      _meshManager = new MeshManager();
+      _glResources = new GLResourcesManager();
       logger.info(TAG, "Creating");
     }
 
     #region Game Life Cycle
     public void initialize() {
       logger.info(TAG, "Initialize");
-      CurrentScene = new MeshTest();
+      CurrentScene = new TextureTest();
     }
     public void resize(int Width, int Height) {
       width = Width;
@@ -94,7 +94,7 @@ namespace HyperSpace.Core {
       logger.info(TAG, "Dispose");
       CurrentScene.dispose();
       assets.dispose();
-      meshes.dispose();
+      glResources.dispose();
     }
     #endregion
   }

@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HyperSpace</RootNamespace>
     <AssemblyName>HyperSpace</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,6 +37,7 @@
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,13 +47,16 @@
   <ItemGroup>
     <Compile Include="Core\Assets\AssetManager.cs" />
     <Compile Include="Core\Game.cs" />
-    <Compile Include="Core\Rendering\MeshManager.cs" />
+    <Compile Include="Core\Rendering\Camera2D.cs" />
+    <Compile Include="Core\Rendering\MeshBuilder.cs" />
+    <Compile Include="Core\Rendering\GLResourceManager.cs" />
     <Compile Include="Core\OpenTKWindow.cs" />
     <Compile Include="Core\Rendering\Camera.cs" />
     <Compile Include="Core\Rendering\IndexBufferObject.cs" />
     <Compile Include="Core\Rendering\Mesh.cs" />
     <Compile Include="Core\Rendering\PerspecitveCamera.cs" />
     <Compile Include="Core\Rendering\Shader.cs" />
+    <Compile Include="Core\Rendering\Texture.cs" />
     <Compile Include="Core\Rendering\VertexAttribute.cs" />
     <Compile Include="Core\Rendering\VertexAttributes.cs" />
     <Compile Include="Core\Rendering\VertexBufferObject.cs" />
@@ -59,6 +64,7 @@
     <Compile Include="Core\Scenes\Tests\BlackScreenTest.cs" />
     <Compile Include="Core\Scenes\Tests\ColoredTriangleRenderScene.cs" />
     <Compile Include="Core\Scenes\Tests\MeshTest.cs" />
+    <Compile Include="Core\Scenes\Tests\TextureTest.cs" />
     <Compile Include="Core\Utils\Disposable.cs" />
     <Compile Include="Core\Utils\Logger.cs" />
     <Compile Include="Core\Utils\Timer.cs" />
@@ -74,15 +80,25 @@
     <None Include="Res\Shader\test.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Res\test.frag">
+    <None Include="Res\Shader\texture.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Res\test.vert">
+    <None Include="Res\Shader\texture.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Res\Textures\skybox\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="OpenTK.dll" />
+    <Content Include="Res\Textures\skybox\space_back6.png" />
+    <Content Include="Res\Textures\skybox\space_bottom4.png" />
+    <Content Include="Res\Textures\skybox\space_front5.png" />
+    <Content Include="Res\Textures\skybox\space_left2.png" />
+    <Content Include="Res\Textures\skybox\space_right1.png" />
+    <Content Include="Res\Textures\skybox\space_top3.png" />
+    <Content Include="Res\Textures\uvmap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

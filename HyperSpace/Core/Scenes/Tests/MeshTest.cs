@@ -12,18 +12,18 @@ namespace HyperSpace.Core.Scenes.Tests {
     private PerspecitveCamera camera;
     private Vector3 cameraPosition;
     private Shader shader;
-    private VertexBufferObject cubeVertexObject;
-    private IndexBufferObject cubeIndexObject;
     private Matrix4 mviewdata;
     float angle = 0.0f;
     private Mesh mesh;
+    private Vector3 posVector;
+    private Matrix4 rotationMatrix;
+    private Matrix4 finalMatrix;
 
     public void onEnter() {
       this.shader         = Game.assets.shader("test");
       this.camera         = new PerspecitveCamera();
-      this.cameraPosition = new Vector3(5f, 5f, -10f);
+      this.cameraPosition = new Vector3(0f, 5f, -20f);
       this.camera.translate(ref cameraPosition);
-      
 
       Vector3 target = new Vector3(0f, 0f, 0f);
       this.camera.lookAt(ref target);
@@ -61,15 +61,15 @@ namespace HyperSpace.Core.Scenes.Tests {
       };
 
       VertexAttributes attrs = new VertexAttributes(VertexAttribute.Position(), VertexAttribute.Color());
-      this.cubeVertexObject  = new VertexBufferObject(true, 3, 7, attrs);
-      this.cubeIndexObject   = new IndexBufferObject(true);
+      this.mesh              = new Mesh(true, 8, 7, attrs);
 
-      this.mesh              = new Mesh(true, 7, 8, attrs);
+      this.mesh.setVerticies(ref vertData);
+      this.mesh.setIndicies(ref indicedata);
 
-      this.cubeVertexObject.setVerticies(ref vertData);
-      this.cubeIndexObject.setIndicies(ref indicedata);
-
+      this.posVector = Vector3.Zero;
       this.mviewdata = Matrix4.CreateTranslation(Vector3.Zero);
+      this.rotationMatrix = Matrix4.CreateRotationX(0f);
+      this.finalMatrix = new Matrix4();
     }
 
     public void resize() {
@@ -79,21 +79,25 @@ namespace HyperSpace.Core.Scenes.Tests {
     public void update(double delta) {
       this.camera.update();
       angle += 1f * (float)delta;
-      Matrix4.CreateRotationY(angle, out mviewdata);
+      Matrix4.CreateRotationY(angle, out rotationMatrix);
     }
 
     public void render() {
       GL.Enable(EnableCap.DepthTest);
+      //GL.Enable(EnableCap.CullFace);
+      //GL.CullFace(CullFaceMode.Back);
 
       this.shader.begin();
         this.shader.projectUsingCamera(ref this.camera);
-        this.shader.uniformMatrix4(Shader.MODEL_VIEW_UNIFORM, false, ref mviewdata);
-
-        this.cubeVertexObject.bind(ref shader);
-          this.cubeIndexObject.bind();
-            GL.DrawElements(BeginMode.Triangles, this.cubeIndexObject.size, DrawElementsType.UnsignedInt, 0);
-          this.cubeIndexObject.unbind();
-        this.cubeVertexObject.unbind(ref shader);
+        this.mesh.bind(ref shader);
+          for (int i = -3; i < 3; i++) {
+            posVector.X = i * 3.5f;
+            Matrix4.CreateTranslation(ref posVector, out mviewdata);
+            finalMatrix = rotationMatrix * mviewdata;
+            this.shader.uniformMatrix4(Shader.MODEL_VIEW_UNIFORM, false, ref finalMatrix);
+            this.mesh.render(PrimitiveType.Triangles, BeginMode.Triangles);
+          }
+        this.mesh.unbind(ref shader);
       this.shader.end();
 
       GL.Flush();
@@ -104,9 +108,6 @@ namespace HyperSpace.Core.Scenes.Tests {
     }
 
     public void dispose() {
-      this.cubeVertexObject.dispose();
-      this.cubeIndexObject.dispose();
-
       this.mesh.dispose();
     }
   }

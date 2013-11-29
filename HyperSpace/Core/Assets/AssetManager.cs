@@ -2,6 +2,7 @@
 using HyperSpace.Core.Utils;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,7 @@ namespace HyperSpace.Core.Assets {
         return sr.ReadToEnd();
       }
     }
+
     public Shader shader(String name) {
       String key = "Shader"+name;
       if (!resources.ContainsKey(key)) {
@@ -32,10 +34,19 @@ namespace HyperSpace.Core.Assets {
 
       return (Shader)resources[key];
     }
-    public void dispose() {
-      foreach (KeyValuePair<String, Disposable> item in resources) {
-        item.Value.dispose();
+
+    public Texture texture(String name) {
+      String key = "Texture" + name;
+      if (!resources.ContainsKey(key)) {
+        Bitmap bitmap = new Bitmap(path("Textures/"+name));
+        resources.Add(key, new Texture(ref bitmap));
       }
+
+      return (Texture)resources[key];
+    }
+
+    public void dispose() {
+      resources = null;
     }
   }
 }

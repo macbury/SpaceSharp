@@ -1,7 +1,7 @@
 ﻿
 using HyperSpace.Core.Utils;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +13,17 @@ namespace HyperSpace.Core.Rendering {
     private VertexBufferObject verticies;
     private IndexBufferObject  indicies;
 
-    public Mesh(bool isStatic, int attributesPerVertex, int vertexCount, VertexAttributes attrs) {
-      verticies = new VertexBufferObject(isStatic, vertexCount, attributesPerVertex, attrs);
+    public Mesh(bool isStatic, int numVertices, int vertexSize, VertexAttributes attrs) {
+      verticies = new VertexBufferObject(isStatic, numVertices, vertexSize, attrs);
       indicies  = new IndexBufferObject(isStatic);
-      Game.meshes.Add(this);
+      Game.glResources.Add(this);
+    }
+
+    public void setIndicies(ref uint[] buffer) {
+      this.indicies.setIndicies(ref buffer);
+    }
+    public void setVerticies(ref float[] vert) {
+      verticies.setVerticies(ref vert);
     }
 
     public void dispose() {
@@ -24,9 +31,7 @@ namespace HyperSpace.Core.Rendering {
       if (this.indicies != null) {
         this.indicies.dispose();
       }
-      if (Game.meshes.Contains(this)) {
-        Game.meshes.Remove(this);
-      }
+      Game.glResources.Remove(this);
     }
 
     #region Rendering
@@ -35,15 +40,16 @@ namespace HyperSpace.Core.Rendering {
       if (!this.indicies.empty())
         this.indicies.bind();
     }
-    public void render(PrimitiveType primitive, int offset, int count) {
+    public void render(PrimitiveType primitiveArray, BeginMode primitiveElement, int count, int  offset) {
       if (indicies.empty()) {
-        GL.DrawArrays(primitive, offset, count);
+        GL.DrawArrays(primitiveArray, offset, count);
       } else {
-        GL.DrawElements(primitive, count, DrawElementsType.UnsignedShort, offset);
+        //GL.DrawElements(BeginMode.Triangles, this.cubeIndexObject.size, DrawElementsType.UnsignedInt, 0);
+        GL.DrawElements(primitiveElement, count, DrawElementsType.UnsignedInt, offset);
       }
     }
-    public void render(PrimitiveType primitive) {
-      render(primitive, 0, indicies.empty() ? verticies.numVertices : indicies.size);
+    public void render(PrimitiveType primitiveArray, BeginMode primitiveElement) {
+      render(primitiveArray, primitiveElement, indicies.empty() ? verticies.numVertices : indicies.size, 0);
     }
     public void unbind(ref Shader shader) {
       this.verticies.unbind(ref shader);

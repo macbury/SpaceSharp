@@ -66,20 +66,28 @@ namespace HyperSpace.Core.Rendering {
     public void update() {
       GL.Viewport(0, 0, (int)_viewportWidth, (int)_viewportHeight);
       if (dirty) {
+        normalizeUp();
         onResize();
         dirty = false;
       }
+
       // to coś jest spierdolone!
-      _view = Matrix4.LookAt(_position, _position + _direction, _up);
-      //Matrix4.Mult(ref _view, ref _projection, out combined); // chyba tutaj
-      combined = _projection;
+      //_view = Matrix4.CreateTranslation(Vector3.Zero);
+      _view   = Matrix4.LookAt(_position, _position + direction, _up);
+      //_view = Matrix4.CreateTranslation(_position);
+      Matrix4.Mult(ref _view, ref _projection, out combined); // chyba tutaj
+      
+      //combined = _projection;
+      Matrix4.Invert(ref combined, out _invProjectionView);
+
     }
 
     public abstract void onResize();
     public void lookAt(ref Vector3 target) {
       Vector3.Subtract(ref target, ref _position, out _direction);
+      //_direction = target - _position;
       _direction.Normalize();
-      normalizeUp();
+      //normalizeUp();
     }
     public void normalizeUp() {
       Vector3.Cross(ref _direction, ref _up, out _temp);
@@ -89,6 +97,7 @@ namespace HyperSpace.Core.Rendering {
     }
     public void translate(ref Vector3 _target) {
       _position += _target;
+      normalizeUp();
     }
     public void resize(int w, int h) {
       this.viewportWidth = w;

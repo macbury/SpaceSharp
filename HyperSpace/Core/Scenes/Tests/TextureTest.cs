@@ -22,27 +22,30 @@ namespace HyperSpace.Core.Scenes.Tests {
       this.texture        = Game.assets.texture("uvmap.png");
 
       this.camera         = new PerspecitveCamera();
-      this.cameraPosition = new Vector3(0f, 0f, -5f);
+      this.cameraPosition = new Vector3(0f, 0f, 5f);
       this.camera.translate(ref cameraPosition);
 
       Vector3 target = new Vector3(0f, 0f, 0f);
       this.camera.lookAt(ref target);
       this.mesh      = MeshBuilder.generateTextureQuad();
-      this.modelView = Matrix4.CreateTranslation(0f, 0f, -10f);
+      this.modelView = Matrix4.CreateTranslation(new Vector3(0f, 0f, 0f));
 
       camera.update();
       Game.logger.info("Camera matrix", camera.ToString());
     }
+
     public void resize() {
       camera.resize();
     }
+
     public void update(double delta) {
-      
       angle += 1f * (float)delta;
       //this.camera.rotateY(angle);
       camera.update();
       //Matrix4.CreateRotationY(angle, out modelView);
+      //Matrix4.CreateRotationZ(angle, out modelView);
     }
+
     public void render() {
       GL.Enable(EnableCap.DepthTest);
       //GL.Enable(EnableCap.CullFace);

@@ -31,6 +31,7 @@ namespace HyperSpace.Core.Scenes.Tests {
     }
 
     public void resize() {
+      //camera.resize(800, 600);
       camera.resize();
     }
 

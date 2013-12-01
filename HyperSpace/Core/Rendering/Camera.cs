@@ -64,7 +64,6 @@ namespace HyperSpace.Core.Rendering {
     }
 
     public void update() {
-      GL.Viewport(0, 0, (int)_viewportWidth, (int)_viewportHeight);
       if (dirty) {
         normalizeUp();
         onResize();

@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Core\Assets\AssetManager.cs" />
     <Compile Include="Core\Game.cs" />
+    <Compile Include="Core\Rendering\2D\Sprite.cs" />
     <Compile Include="Core\Rendering\Camera2D.cs" />
     <Compile Include="Core\Rendering\MeshBuilder.cs" />
     <Compile Include="Core\Rendering\GLResourceManager.cs" />

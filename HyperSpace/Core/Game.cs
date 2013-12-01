@@ -76,6 +76,7 @@ namespace HyperSpace.Core {
       CurrentScene = new OrthoTestScene();
     }
     public void resize(int Width, int Height) {
+      GL.Viewport(0, 0, Width, Height);
       width = Width;
       height = Height;
       CurrentScene.resize();

@@ -79,9 +79,7 @@ namespace HyperSpace.Core.Rendering {
       
       //combined = _projection;
       Matrix4.Invert(ref combined, out _invProjectionView);
-
     }
-
     public abstract void onResize();
     public void lookAt(ref Vector3 target) {
       Vector3.Subtract(ref target, ref _position, out _direction);

@@ -64,6 +64,7 @@
     <Compile Include="Core\Scenes\Tests\BlackScreenTest.cs" />
     <Compile Include="Core\Scenes\Tests\ColoredTriangleRenderScene.cs" />
     <Compile Include="Core\Scenes\Tests\MeshTest.cs" />
+    <Compile Include="Core\Scenes\Tests\OrthoTestScene.cs" />
     <Compile Include="Core\Scenes\Tests\TextureTest.cs" />
     <Compile Include="Core\Utils\Disposable.cs" />
     <Compile Include="Core\Utils\Logger.cs" />

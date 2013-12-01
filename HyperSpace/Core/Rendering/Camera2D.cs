@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 namespace HyperSpace.Core.Rendering {
   class Camera2D : Camera  {
     public int zoom = 1;
-    public Camera2D() : base(Game.shared.width, Game.shared.height) { }
+    public Camera2D() : base(Game.shared.width, Game.shared.height) {
+      this.near = 0f;
+    }
 
     public override void onResize() {
       _projection = Matrix4.CreateOrthographicOffCenter(zoom * -viewportWidth / 2, zoom * (viewportWidth / 2), zoom * -(viewportHeight / 2), zoom * viewportHeight / 2, near, far);
+      this.near = near;
     }
   }
 }

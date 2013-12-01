@@ -23,7 +23,7 @@ namespace HyperSpace.Core.Rendering {
     public    Matrix4 combined;
     public Vector3 direction {
       get { return _direction; }
-      set { _direction = value; }
+      //set { _direction = value; }
     }
     protected Matrix4 _invProjectionView;
 
@@ -71,21 +71,14 @@ namespace HyperSpace.Core.Rendering {
         dirty = false;
       }
 
-      // to coś jest spierdolone!
-      //_view = Matrix4.CreateTranslation(Vector3.Zero);
       _view   = Matrix4.LookAt(_position, _position + direction, _up);
-      //_view = Matrix4.CreateTranslation(_position);
-      Matrix4.Mult(ref _view, ref _projection, out combined); // chyba tutaj
-      
-      //combined = _projection;
+      Matrix4.Mult(ref _view, ref _projection, out combined);
       Matrix4.Invert(ref combined, out _invProjectionView);
     }
     public abstract void onResize();
     public void lookAt(ref Vector3 target) {
       Vector3.Subtract(ref target, ref _position, out _direction);
-      //_direction = target - _position;
       _direction.Normalize();
-      //normalizeUp();
     }
     public void normalizeUp() {
       Vector3.Cross(ref _direction, ref _up, out _temp);

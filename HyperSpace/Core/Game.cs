@@ -65,7 +65,7 @@ namespace HyperSpace.Core {
         throw new Exception("Already initialized!!!!");
       _game = this;
 
-      _assets      = new AssetManager("Res/");
+      _assets      = new AssetManager("Assets/");
       _glResources = new GLResourcesManager();
       logger.info(TAG, "Creating");
     }

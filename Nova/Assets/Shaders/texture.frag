@@ -1,4 +1,4 @@
-﻿#version 150
+#version 150
 
 varying vec2         v_textCoord0;
 uniform sampler2D    u_texture0;

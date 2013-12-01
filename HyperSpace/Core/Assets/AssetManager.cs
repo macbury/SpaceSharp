@@ -29,7 +29,7 @@ namespace HyperSpace.Core.Assets {
     public Shader shader(String name) {
       String key = "Shader"+name;
       if (!resources.ContainsKey(key)) {
-        resources.Add(key, new Shader(readString("Shader/" + name + ".vert"), readString("Shader/" + name + ".frag")));
+        resources.Add(key, new Shader(readString("Shaders/" + name + ".vert"), readString("Shaders/" + name + ".frag")));
       }
 
       return (Shader)resources[key];

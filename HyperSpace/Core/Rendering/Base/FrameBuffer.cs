@@ -17,6 +17,10 @@ namespace HyperSpace.Core.Rendering.Base {
     private bool hasDepth;
     private bool isDirty;
 
+    public Texture texture {
+      get { return colorTexture; }
+    }
+
     public FrameBuffer(int w, int h, bool hasDepth) {
       this.hasDepth = hasDepth;
       this._width   = w;

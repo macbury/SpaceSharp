@@ -22,7 +22,14 @@ namespace HyperSpace.Core.Rendering {
     public void setIndicies(ref uint[] buffer) {
       this.indicies.setIndicies(ref buffer);
     }
+    public void setIndices(uint[] buffer) {
+      indicies.setIndicies(ref buffer);
+    }
+
     public void setVerticies(ref float[] vert) {
+      verticies.setVerticies(ref vert);
+    }
+    public void setVertices(float[] vert) {
       verticies.setVerticies(ref vert);
     }
 
@@ -57,5 +64,6 @@ namespace HyperSpace.Core.Rendering {
         this.indicies.unbind();
     }
     #endregion
+
   }
 }

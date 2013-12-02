@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,15 @@ namespace HyperSpace.Core.Rendering {
       mesh.setVerticies(ref quadTextureVerts);
       mesh.setIndicies(ref quadTextureIndencies);
 
+      return mesh;
+    }
+
+    public static Mesh screenQuad(ref Camera camera, int textureUnit) {
+      VertexAttributes attrs = new VertexAttributes(VertexAttribute.Position(), VertexAttribute.Color(), VertexAttribute.TexCoords(textureUnit));
+      Mesh mesh = new Mesh(true, 4, 6, attrs);
+
+      Vector3 vec0 = Vector3.Zero;
+      camera.unproject(ref vec0);
       return mesh;
     }
 

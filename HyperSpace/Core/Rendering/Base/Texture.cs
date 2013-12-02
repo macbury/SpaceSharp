@@ -14,17 +14,40 @@ namespace HyperSpace.Core.Rendering {
     public  TextureTarget textureTarget = TextureTarget.Texture2D;
     private TextureMinFilter minFilter;
     private TextureMagFilter magFilter;
+
     private int textureHandle = 0;
     private int _width;
     private int _height;
 
+    public int width {
+      get { return _width; }
+    }
+    public int height {
+      get { return _height; }
+    }
+
+    public Texture(int width, int height) {
+      _width  = width;
+      _height = height;
+
+      init();
+      Bitmap bitmap = new Bitmap(_width, _height);
+      load(ref bitmap);
+    }
+
     public Texture(ref Bitmap bmp) {
-      createHandle();
+      init();
       load(ref bmp);
+    }
+
+    private void init() {
+      createHandle();
+
       setFilters(TextureMinFilter.Linear, TextureMagFilter.Linear);
       setWrap(TextureWrapMode.Clamp, TextureWrapMode.Clamp);
       Game.glResources.Add(this);
     }
+
     private void createHandle() {
       if (textureHandle == 0) {
         textureHandle = GL.GenTexture();
@@ -32,6 +55,11 @@ namespace HyperSpace.Core.Rendering {
         throw new Exception("already have handle!!!!");
       }
     }
+
+    public int getHandle() {
+      return textureHandle;
+    }
+
     public void load(ref Bitmap bmp) {
       GL.BindTexture(TextureTarget.Texture2D, textureHandle);
 
@@ -47,6 +75,7 @@ namespace HyperSpace.Core.Rendering {
       GL.TexParameter(textureTarget, TextureParameterName.TextureMinFilter, (int)min);
       GL.TexParameter(textureTarget, TextureParameterName.TextureMagFilter, (int)mag);
     }
+
     public void setWrap(TextureWrapMode u, TextureWrapMode v) {
       bind();
       GL.TexParameter(textureTarget, TextureParameterName.TextureWrapS, (int)u);
@@ -56,10 +85,12 @@ namespace HyperSpace.Core.Rendering {
     public void bind() {
       GL.BindTexture(textureTarget, textureHandle);
     }
+
     public void bind(int unit) {
       bind();
       GL.ActiveTexture(TextureUnit.Texture0 + unit);
     }
+
     private void delete() {
       GL.DeleteTexture(textureHandle);
       textureHandle = 0;

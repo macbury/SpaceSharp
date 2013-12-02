@@ -1,4 +1,5 @@
-﻿using HyperSpace.Core.Rendering.Base;
+﻿using HyperSpace.Core.Rendering;
+using HyperSpace.Core.Rendering.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +11,26 @@ namespace HyperSpace.Core.Scenes.Tests {
     private FrameBuffer fbo;
 
     public void onEnter() {
-      this.fbo = new FrameBuffer();
+      this.fbo = new FrameBuffer(800, 600, true);
+      Camera camera = new Camera2D();
+      camera.update();
+      Mesh screenQuad = MeshBuilder.screenQuad(ref camera, 0);
     }
 
     public void resize() {
-      throw new NotImplementedException();
+      
     }
 
     public void update(double delta) {
-      throw new NotImplementedException();
+      
     }
 
     public void render() {
-      throw new NotImplementedException();
+      
     }
 
     public void onExit() {
-      throw new NotImplementedException();
+      
     }
 
     public void dispose() {

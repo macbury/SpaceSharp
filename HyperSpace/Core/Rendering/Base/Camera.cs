@@ -100,5 +100,20 @@ namespace HyperSpace.Core.Rendering {
     public override string ToString() {
       return "Projection:\n" + _projection.ToString() + "\nView:\n" + _view.ToString() + "\nCombined:\n" + combined.ToString();
     }
+
+    public void unproject(ref Vector3 vec, float viewportX, float viewportY, float viewportWidth, float viewportHeight) {
+      float x = vec.X, y = vec.Y;
+      x = x - viewportX;
+      y = Game.shared.height - y - 1;
+      y = y - viewportY;
+      vec.X = (2 * x) / viewportWidth - 1;
+      vec.Y = (2 * y) / viewportHeight - 1;
+      vec.Z = 2 * vec.Z - 1;
+      Vector3.TransformPerspective(ref vec, ref _invProjectionView, out vec);
+    }
+
+    public void unproject(ref Vector3 vec) {
+      unproject(ref vec, 0, 0, (float)Game.shared.width, (float)Game.shared.height);
+    }
   }
 }

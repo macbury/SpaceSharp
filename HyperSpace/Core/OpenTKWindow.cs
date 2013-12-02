@@ -22,6 +22,7 @@ namespace HyperSpace.Core {
     protected override void OnLoad(EventArgs e) {
       base.OnLoad(e);
       Game.shared.initialize();
+      WindowBorder = WindowBorder.Fixed;
     }
 
     protected override void OnUpdateFrame(FrameEventArgs e) {

@@ -45,11 +45,13 @@ namespace HyperSpace.Core.Rendering {
       uniformsMapping   = new Dictionary<string, int>();
 
       pgmID = GL.CreateProgram();
+      Game.logger.info(TAG, "Created handle {0}, Compiling...", pgmID);
 
-      compile(vertex, ShaderType.VertexShader, pgmID, out vsID);
+      compile(vertex,   ShaderType.VertexShader, pgmID, out vsID);
       compile(fragment, ShaderType.FragmentShader, pgmID, out fsID);
 
       GL.LinkProgram(pgmID);
+      //Game.logger.info(TAG, "Compiled " + vertex + " and " + fragment);
       Game.logger.info(TAG, "Compiled program {0}", pgmID);
       Game.logger.info(TAG, GL.GetProgramInfoLog(pgmID));
 
@@ -124,7 +126,5 @@ namespace HyperSpace.Core.Rendering {
     }
 
     #endregion
-
-    
   }
 }

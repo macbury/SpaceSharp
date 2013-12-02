@@ -30,8 +30,8 @@ namespace HyperSpace.Core.Rendering {
     }
 
     public static Mesh screenQuad(ref Camera camera, int textureUnit) {
-      VertexAttributes attrs = new VertexAttributes(VertexAttribute.Position(), VertexAttribute.Color(), VertexAttribute.TexCoords(textureUnit));
-      Mesh mesh = new Mesh(true, 4, 6, attrs);
+      VertexAttributes attrs = new VertexAttributes(VertexAttribute.Position(), VertexAttribute.TexCoords(textureUnit));
+      Mesh mesh = new Mesh(true, 4, 5, attrs);
 
       Vector3 vec0 = Vector3.Zero;
       camera.unproject(ref vec0);
@@ -39,10 +39,12 @@ namespace HyperSpace.Core.Rendering {
       Vector3 vec1 = new Vector3(Game.shared.width, Game.shared.height, 0);
       camera.unproject(ref vec1);
 
-      mesh.setVertices(new float[]{vec0.X, vec0.Y, 0, 1, 1, 1, 1, 0, 1,
-                        vec1.X, vec0.Y, 0, 1, 1, 1, 1, 1, 1,
-                        vec1.X, vec1.Y, 0, 1, 1, 1, 1, 1, 0,
-                        vec0.X, vec1.Y, 0, 1, 1, 1, 1, 0, 0});
+      mesh.setVertices(new float[]{
+                        vec0.X, vec0.Y, 0, 0, 1,
+                        vec1.X, vec0.Y, 0, 1, 1,
+                        vec1.X, vec1.Y, 0, 1, 0,
+                        vec0.X, vec1.Y, 0, 0, 0
+                      });
       mesh.setIndices(new uint[] { 0, 1, 2, 2, 3, 0 });
 
       return mesh;

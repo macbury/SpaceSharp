@@ -67,6 +67,9 @@
     <Compile Include="Core\Rendering\G2D\Sprite.cs" />
     <Compile Include="Core\Rendering\G2D\Camera2D.cs" />
     <Compile Include="Core\Rendering\Base\MeshBuilder.cs" />
+    <Compile Include="Core\Rendering\G3D\Model.cs" />
+    <Compile Include="Core\Rendering\G3D\ModelBatch.cs" />
+    <Compile Include="Core\Rendering\G3D\ModelData.cs" />
     <Compile Include="Core\Rendering\GLResourceManager.cs" />
     <Compile Include="Core\OpenTKWindow.cs" />
     <Compile Include="Core\Rendering\Base\Camera.cs" />

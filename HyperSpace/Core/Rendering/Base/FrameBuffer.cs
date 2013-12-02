@@ -16,6 +16,7 @@ namespace HyperSpace.Core.Rendering.Base {
     private Texture colorTexture;
     private bool hasDepth;
     private bool isDirty;
+    private bool p;
 
     public Texture texture {
       get { return colorTexture; }
@@ -28,6 +29,8 @@ namespace HyperSpace.Core.Rendering.Base {
       build();
       Game.glResources.Add(this);
     }
+
+    public FrameBuffer(bool hasDepth) : this(Game.shared.width, Game.shared.height, hasDepth) { }
 
     private void build() {
       defaultFramebufferHandle = 0;

@@ -62,6 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Assets\AssetManager.cs" />
+    <Compile Include="Core\Assets\ModelLoader\IModelLoader.cs" />
+    <Compile Include="Core\Assets\ModelLoader\OBJModelLoader.cs" />
+    <Compile Include="Core\Assets\ModelLoader\OBJ\VertexSoup.cs" />
     <Compile Include="Core\Game.cs" />
     <Compile Include="Core\Rendering\Base\FrameBuffer.cs" />
     <Compile Include="Core\Rendering\G2D\Sprite.cs" />
@@ -81,13 +84,15 @@
     <Compile Include="Core\Rendering\Base\VertexAttribute.cs" />
     <Compile Include="Core\Rendering\Base\VertexAttributes.cs" />
     <Compile Include="Core\Rendering\Base\VertexBufferObject.cs" />
-    <Compile Include="Core\Scenes\Scene.cs" />
-    <Compile Include="Core\Scenes\Tests\BlackScreenTest.cs" />
-    <Compile Include="Core\Scenes\Tests\ColoredTriangleRenderScene.cs" />
-    <Compile Include="Core\Scenes\Tests\FrameBufferTest.cs" />
-    <Compile Include="Core\Scenes\Tests\MeshTest.cs" />
-    <Compile Include="Core\Scenes\Tests\OrthoTestScene.cs" />
-    <Compile Include="Core\Scenes\Tests\TextureTest.cs" />
+    <Compile Include="Core\Scene.cs" />
+    <Compile Include="Core\Assets\ModelLoader\OBJ\WavefrontObjLoader.cs" />
+    <Compile Include="GameLogic\Tests\BlackScreenTest.cs" />
+    <Compile Include="GameLogic\Tests\ColoredTriangleRenderScene.cs" />
+    <Compile Include="GameLogic\Tests\FrameBufferTest.cs" />
+    <Compile Include="GameLogic\Tests\MeshTest.cs" />
+    <Compile Include="GameLogic\Tests\ModelLoaderTestScene.cs" />
+    <Compile Include="GameLogic\Tests\OrthoTestScene.cs" />
+    <Compile Include="GameLogic\Tests\TextureTest.cs" />
     <Compile Include="Core\Utils\Disposable.cs" />
     <Compile Include="Core\Utils\Logger.cs" />
     <Compile Include="Core\Utils\Timer.cs" />
@@ -101,10 +106,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="OpenTK.dll.config" />
+    <None Include="Ext\OpenTK.dll.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OpenTK.dll" />
+    <Content Include="Ext\OpenTK.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -129,6 +134,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

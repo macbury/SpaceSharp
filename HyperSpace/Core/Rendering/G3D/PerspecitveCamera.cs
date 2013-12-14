@@ -40,5 +40,9 @@ namespace HyperSpace.Core.Rendering {
       float aspect = _viewportWidth / _viewportHeight;
       Matrix4.CreatePerspectiveFieldOfView(fieldOfView, aspect, near, far, out _projection);
     }
+
+    public override void calculateViewMatrix() {
+      _view = Matrix4.LookAt(_position, _position + direction, _up);
+    }
   }
 }

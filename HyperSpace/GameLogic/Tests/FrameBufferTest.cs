@@ -22,15 +22,22 @@ namespace HyperSpace.Core.Scenes.Tests {
     private Mesh mesh;
     private Texture texture;
     private float angle;
+    private Matrix4 screenQuadView;
 
     public void onEnter() {
       this.cameraPosition = new Vector3(0f, 0f, 10f);
+      this.screenQuadView = Matrix4.CreateTranslation(new Vector3(0, 0, 0));
       //Game.assets.shader("blur");
       this.textureShader = Game.assets.shader("texture");
-      this.fboShader = Game.assets.shader("invert");
+      this.fboShader     = Game.assets.shader("invert");
 
-      this.fbo           = new FrameBuffer(600, 480, true);
+      this.fbo           = new FrameBuffer(true);
       this.camera2D      = new Camera2D();
+      this.camera2D.setToOrtho(true);
+
+      Vector3 cam2dPos = new Vector3(70,0,-1);
+
+      camera2D.transform(ref cam2dPos);
       //this.camera2D.translate(ref cameraPosition);
       camera2D.update();
 
@@ -55,7 +62,7 @@ namespace HyperSpace.Core.Scenes.Tests {
     }
 
     public void update(double delta) {
-      angle += 80f * (float)delta;
+      angle -= 80f * (float)delta;
       camera.orbit(Vector3.Zero, 10, 90, angle);
       camera.update();
 
@@ -65,6 +72,9 @@ namespace HyperSpace.Core.Scenes.Tests {
     public void render() {
       fbo.begin();
       {
+        GL.Enable(EnableCap.DepthTest);
+        GL.Enable(EnableCap.CullFace);
+        GL.CullFace(CullFaceMode.Back);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         textureShader.begin();
         {
@@ -84,12 +94,13 @@ namespace HyperSpace.Core.Scenes.Tests {
       }
       fbo.end();
 
+      GL.Disable(EnableCap.CullFace);
       fboShader.begin();
       {
         fbo.texture.bind(0);
         fboShader.uniformTexture(0);
         fboShader.projectUsingCamera(ref camera2D);
-        fboShader.uniformMatrix4(Shader.MODEL_VIEW_UNIFORM, false, ref modelView);
+        fboShader.uniformMatrix4(Shader.MODEL_VIEW_UNIFORM, false, ref screenQuadView);
         screenQuad.bind(ref fboShader);
         {
           screenQuad.render(PrimitiveType.Triangles, BeginMode.Triangles);
@@ -104,10 +115,10 @@ namespace HyperSpace.Core.Scenes.Tests {
     }
 
     public void dispose() {
-      //this.textureShader.dispose();
-      //this.fboShader.dispose();
-      //this.screenQuad.dispose();
-      //this.fbo.dispose();
+      this.textureShader.dispose();
+      this.fboShader.dispose();
+      this.screenQuad.dispose();
+      this.fbo.dispose();
     }
   }
 }

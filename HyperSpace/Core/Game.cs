@@ -3,6 +3,7 @@ using HyperSpace.Core.Rendering;
 using HyperSpace.Core.Scenes;
 using HyperSpace.Core.Scenes.Tests;
 using HyperSpace.Core.Utils;
+using HyperSpace.GameLogic.Tests;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace HyperSpace.Core {
     #region Game Life Cycle
     public void initialize() {
       logger.info(TAG, "Initialize");
-      CurrentScene = new FrameBufferTest();
+      CurrentScene = new ModelLoaderTestScene();
     }
     public void resize(int Width, int Height) {
       GL.Viewport(0, 0, Width, Height);
